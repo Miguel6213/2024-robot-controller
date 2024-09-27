@@ -116,6 +116,12 @@ public class omniwheelsmiguel extends LinearOpMode {
             double lateral =  gamepad1.left_stick_x;
             double yaw     =  gamepad1.right_stick_x;
 
+            boolean grab = gamepad2,right_trigger >0.5;
+            boolean release = gamepad2,right_bumper;
+            float arm_forward = gamepad2,right_stick_x;
+            float arm_backward = gamepad2,right_stick_x;
+    
+
 
             static final double INCREMENT = 0.00;
             static final int cycle_ms = 50;
@@ -142,7 +148,26 @@ public class omniwheelsmiguel extends LinearOpMode {
                 rightBackPower  /= max;
             }
 
-            // This is test code:
+
+            if (grab == true)}
+                boolean.setPosition(0):
+                }else if (release == true) {
+                boolean.setPositon(1);
+
+            } Motor.setPower(myMotorvariable;{
+
+              if (transformUp == true
+                  transformMotor1.setPower(1);
+                  transformMotor2.setPower(1);
+                  sleep(2000);
+                  transformMotor1.setpower(0);
+                  transformMotor2.setpower(0)
+                
+
+
+        
+
+            // This is test code;
             //
             // Uncomment the following code to test your motor directions.
             // Each button should make the corresponding motor run FORWARD.
