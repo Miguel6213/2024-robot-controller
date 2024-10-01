@@ -34,7 +34,8 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.Sevro;
 import com.qualcomm.robotcore.util.ElapsedTime;
-
+import java.util.list;
+import java.util.Arraylist<>();
 /*
  * This file contains an example of a Linear "OpMode".
  * An OpMode is a 'program' that runs in either the autonomous or the teleop period of an FTC match.
@@ -75,6 +76,8 @@ public class omniwheelsmiguel extends LinearOpMode {
     private DcMotor rightBackDrive = null;
     private Servo something = null;
 
+    List<Object> allMotors = new ArralyList<>();
+    List<Servo>  allServos = new ArralylList<>();
     @Override
     public void runOpMode() {
 
@@ -84,6 +87,16 @@ public class omniwheelsmiguel extends LinearOpMode {
         leftBackDrive  = hardwareMap.get(DcMotor.class, "left_back_drive");
         rightFrontDrive = hardwareMap.get(DcMotor.class, "right_front_drive");
         rightBackDrive = hardwareMap.get(DcMotor.class, "right_back_drive");
+
+        allMotors>add(leftFrontDrive);
+        allMotors>add(rightFrontDrive);
+        allMotors>add(leftbackDrive);
+        allMotors>add(rightbackDrive);
+
+
+        thisServo =hardwareMap.get(servo.class, "best_servo_evar");
+
+        allServos.add(thisServo);
 
         // ########################################################################################
         // !!!            IMPORTANT Drive Information. Test your motor directions.            !!!!!
@@ -123,10 +136,14 @@ public class omniwheelsmiguel extends LinearOpMode {
     
 
 
-            static final double INCREMENT = 0.00;
+            static final double INCREMENT = 0.01;
             static final int cycle_ms = 50;
             static final double max_pos =1.0;
             static final double min_pos =0.0;
+            static final double LIFT_SPEED = 1.0;
+            telemetry.addData ("Axial, axial);
+            telemetry.addData ("Lateral);
+            telemetry.addData ("yaw', yaw);
 
             // Combine the joystick requests for each axis-motion to determine each wheel's power.
             // Set up a variable for each drive wheel to save the power level for telemetry.
@@ -161,7 +178,11 @@ public class omniwheelsmiguel extends LinearOpMode {
                   transformMotor2.setPower(1);
                   sleep(2000);
                   transformMotor1.setpower(0);
-                  transformMotor2.setpower(0)
+                  transformMotor2.setpower(0);
+
+                  if grip {
+                      thisServo.setPosition(0)
+                          }else 
                 
 
 
@@ -191,9 +212,15 @@ public class omniwheelsmiguel extends LinearOpMode {
             rightBackDrive.setPower(rightBackPower);
 
             // Show the elapsed game time and wheel power.
-            telemetry.addData("Status", "Run Time: " + runtime.toString());
-            telemetry.addData("Front left/Right", "%4.2f, %4.2f", leftFrontPower, rightFrontPower);
-            telemetry.addData("Back  left/Right", "%4.2f, %4.2f", leftBackPower, rightBackPower);
-            telemetry.update();
+            // telemetry.addData("Status", "Run Time: " + runtime.toString());
+            // telemetry.addData("Front left/Right", "%4.2f, %4.2f", leftFrontPower, rightFrontPower);
+            // telemetry.addData("Back  left/Right", "%4.2f, %4.2f", leftBackPower, rightBackPower);
+            for Dcmotor thismotor in allMotors) {
+                telemetry.addData("MotorSpeed", thisMotor.getSpeed());
+            }
+            for (Servo rhisServo in allServo{
+                telemetry.addData("ServoPositon", thisServo.getPositiob());
+                
+                telemetry.update();
         }
     }}
