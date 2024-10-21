@@ -30,12 +30,15 @@
 package org.firstinspires.ftc.robotcontroller.external.samples;
 
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
+import com.qualcomm.robotcore.util.ElapsedTime;
+import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-import com.qualcomm.robotcore.hardware.Sevro;
+import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
-import java.util.list;
-import java.util.Arraylist<>();
+import java.util.List;
+import java.util.ArrayList;
 /*
  * This file contains an example of a Linear "OpMode".
  * An OpMode is a 'program' that runs in either the autonomous or the teleop period of an FTC match.
@@ -43,13 +46,7 @@ import java.util.Arraylist<>();
  * When a selection is made from the menu, the corresponding OpMode is executed.
  *
  * This particular OpMode illustrates driving a 4-motor Omni-Directional (or Holonomic) robot.
- * This code will work with either a Mecanum-Drive or an X-Drive train.
- * Both of these drives are illustrated at https://gm0.org/en/latest/docs/robot-design/drivetrains/holonomic.html
- * Note that a Mecanum drive must display an X roller-pattern when viewed from above.
- *
- * Also note that it is critical to set the correct rotation direction for each motor.  See details below.
- *
- * Holonomic drives provide the ability for the robot to move in three axes (directions) simultaneously.
+
  * Each motion axis is controlled by one Joystick axis.
  *
  * 1) Axial:    Driving forward and backward               Left-joystick Forward/Backward
@@ -66,7 +63,7 @@ import java.util.Arraylist<>();
 
 @TeleOp(name="omni man OpMode", group="Linear OpMode")
 @Disabled
-public class omniwheelsmiguel extends LinearOpMode {
+public class OmniWheelsmiguel extends LinearOpMode {
 
     // Declare OpMode members for each of the 4 motors.
     private ElapsedTime runtime = new ElapsedTime();
@@ -74,10 +71,11 @@ public class omniwheelsmiguel extends LinearOpMode {
     private DcMotor leftBackDrive = null;
     private DcMotor rightFrontDrive = null;
     private DcMotor rightBackDrive = null;
-    private Servo something = null;
+    private DcMotor up_down = null;
+    private Servo grabServo = null;
 
-    List<Object> allMotors = new ArralyList<>();
-    List<Servo>  allServos = new ArralylList<>();
+    List<DcMotor> allMotors = new ArrayList<>();
+    List<Servo>  allServos = new ArrayList<>();
     @Override
     public void runOpMode() {
 
@@ -88,15 +86,15 @@ public class omniwheelsmiguel extends LinearOpMode {
         rightFrontDrive = hardwareMap.get(DcMotor.class, "right_front_drive");
         rightBackDrive = hardwareMap.get(DcMotor.class, "right_back_drive");
 
-        allMotors>add(leftFrontDrive);
-        allMotors>add(rightFrontDrive);
-        allMotors>add(leftbackDrive);
-        allMotors>add(rightbackDrive);
+        allMotors.add(leftFrontDrive);
+        allMotors.add(rightFrontDrive);
+        allMotors.add(leftBackDrive);
+        allMotors.add(rightBackDrive);
 
 
-        thisServo =hardwareMap.get(servo.class, "best_servo_evar");
+        grabServo =hardwareMap.get(Servo.class, "josh");
 
-        allServos.add(thisServo);
+        allServos.add(grabServo);
 
         // ########################################################################################
         // !!!            IMPORTANT Drive Information. Test your motor directions.            !!!!!
@@ -129,28 +127,27 @@ public class omniwheelsmiguel extends LinearOpMode {
             double lateral =  gamepad1.left_stick_x;
             double yaw     =  gamepad1.right_stick_x;
 
-            boolean grab = gamepad2,right_trigger >0.5;
-            boolean release = gamepad2,right_bumper;
-            float arm_forward = gamepad2,right_stick_x;
-            float arm_backward = gamepad2,right_stick_x;
+            boolean grab = gamepad2.right_trigger >0.5;
+            boolean release = gamepad2.right_bumper;
+            float arm_up = gamepad2.right_stick_x;
     
 
 
-            static final double INCREMENT = 0.01;
-            static final int cycle_ms = 50;
-            static final double max_pos =1.0;
-            static final double min_pos =0.0;
-            static final double LIFT_SPEED = 1.0;
-            telemetry.addData ("Axial, axial);
-            telemetry.addData ("Lateral);
-            telemetry.addData ("yaw', yaw);
+            final double INCREMENT = 0.01;
+            final int cycle_ms = 50;
+            final double max_pos =1.0;
+            final double min_pos =0.0;
+            final double LIFT_SPEED = 1.0;
+            telemetry.addData ("Axial", axial);
+            telemetry.addData ("Lateral",lateral);
+            telemetry.addData ("yaw", yaw);
 
             // Combine the joystick requests for each axis-motion to determine each wheel's power.
             // Set up a variable for each drive wheel to save the power level for telemetry.
             double leftFrontPower  = axial + lateral + yaw;
             double rightFrontPower = axial - lateral - yaw;
             double leftBackPower   = axial - lateral + yaw;
-            double rightBackPower  = axial + lateral - yaw;
+            double rightBackPower  = axial - lateral + yaw;
 
             // Normalize the values so no wheel power exceeds 100%
             // This ensures that the robot maintains the desired motion.
@@ -166,27 +163,26 @@ public class omniwheelsmiguel extends LinearOpMode {
             }
 
 
-            if (grab == true)}
-                boolean.setPosition(0):
-                }else if (release == true) {
-                boolean.setPositon(1);
+            if (grab == true){
+                grabServo.setPosition(0.0);
+            } else if (release == true) {
+                grabServo.setPosition(1.0);
+            } 
+            
+            up_down.setPower(arm_up);
 
-            } Motor.setPower(myMotorvariable;{
+            // if (transformUp == true
+            //     transformMotor1.setPower(1);
+            //     transformMotor2.setPower(1);
+            //     sleep(2000);
+            //     transformMotor1.setpower(0);
+            //     transformMotor2.setpower(0);
 
-              if (transformUp == true
-                  transformMotor1.setPower(1);
-                  transformMotor2.setPower(1);
-                  sleep(2000);
-                  transformMotor1.setpower(0);
-                  transformMotor2.setpower(0);
-
-                  if grip {
-                      thisServo.setPosition(0)
-                          }else 
-                
+               
+            
 
 
-        
+    
 
             // This is test code;
             //
@@ -215,12 +211,15 @@ public class omniwheelsmiguel extends LinearOpMode {
             // telemetry.addData("Status", "Run Time: " + runtime.toString());
             // telemetry.addData("Front left/Right", "%4.2f, %4.2f", leftFrontPower, rightFrontPower);
             // telemetry.addData("Back  left/Right", "%4.2f, %4.2f", leftBackPower, rightBackPower);
-            for Dcmotor thismotor in allMotors) {
-                telemetry.addData("MotorSpeed", thisMotor.getSpeed());
+            for (DcMotor thisMotor : allMotors) {
+                telemetry.addData("MotorSpeed", thisMotor.getPower());
             }
-            for (Servo rhisServo in allServo{
-                telemetry.addData("ServoPositon", thisServo.getPositiob());
+            for (Servo thisServo : allServos){
+                telemetry.addData("ServoPositon", thisServo.getPosition());
                 
                 telemetry.update();
+            }
         }
-    }}
+    }
+}
+
