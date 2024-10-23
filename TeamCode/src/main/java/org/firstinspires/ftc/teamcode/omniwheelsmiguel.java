@@ -62,7 +62,7 @@ import java.util.ArrayList;
  */
 
 @TeleOp(name="omni man OpMode", group="Linear OpMode")
-@Disabled
+
 public class OmniWheelsmiguel extends LinearOpMode {
 
     // Declare OpMode members for each of the 4 motors.
@@ -85,7 +85,7 @@ public class OmniWheelsmiguel extends LinearOpMode {
         leftBackDrive  = hardwareMap.get(DcMotor.class, "left_back_drive");
         rightFrontDrive = hardwareMap.get(DcMotor.class, "right_front_drive");
         rightBackDrive = hardwareMap.get(DcMotor.class, "right_back_drive");
-
+        up_down = hardwareMap.get(Dcmotor.class, "up_down"); 
         allMotors.add(leftFrontDrive);
         allMotors.add(rightFrontDrive);
         allMotors.add(leftBackDrive);
